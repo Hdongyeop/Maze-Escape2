@@ -8,17 +8,15 @@ public class RoomData : MonoBehaviour
     public string roomName = "";
     public int playerCount = 0;
     public int maxPlayer = 0;
+    public bool isLock = false;
     
     public Text roomNameText;
     public Text playerCountText;
-
-    void Awake()
-    {
-        
-    }
+    public GameObject lockSprite;
 
     public void UpdateInfo()
     {
+        lockSprite.SetActive(isLock);
         roomNameText.text = roomName;
         playerCountText.text = $"{playerCount} / {maxPlayer}";
     }
