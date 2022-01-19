@@ -21,6 +21,10 @@ namespace Com.Redsea.MazeEscape
         
         #region Public Fields
 
+        public Vector3 originPosition
+        {
+            get => _originPosition;
+        }
         public string signName;
         public Maze maze;
         public bool isFixed;
@@ -117,7 +121,26 @@ namespace Com.Redsea.MazeEscape
         }
 
         #endregion
-        
+
+        #region Custom Methods
+
+        public void MoveTo(int posIndex)
+        {
+            transform.position = _positions[posIndex].position;
+            
+            if (_isStart)
+            {
+                maze.startIndex = posIndex;
+                Debug.Log($"Start 자리를 {maze.startIndex}로 옮겼습니다.");
+            }
+            else
+            {
+                maze.endIndex = posIndex;
+                Debug.Log($"End 자리를 {maze.endIndex}로 옮겼습니다.");
+            }
+        }
+
+        #endregion
     }
 
 }

@@ -16,18 +16,24 @@ namespace Com.Redsea.MazeEscape
     
     public class Maze : MonoBehaviourPunCallbacks
     {
-        #region Private Fields
-
-        [SerializeField] private bool[] _onOffData;
-
-        #endregion
-        
         #region Public Fields
-        
-        public bool[] onOffData
+
+        public bool[] defaultSetting = new[]
         {
-            get => _onOffData;
-        }
+            true,true,true,true,true,
+            true,false,false,false,false,true,
+            false,false,false,false,false,
+            true,false,false,false,false,true,
+            false,false,false,false,false,
+            true,false,false,false,false,true,
+            false,false,false,false,false,
+            true,false,false,false,false,true,
+            false,false,false,false,false,
+            true,false,false,false,false,true,
+            true,true,true,true,true
+        };
+        
+        public bool[] onOffData;
         public GameObject[] bars;
         public Transform[] positions;
         public int startIndex;
@@ -41,7 +47,7 @@ namespace Com.Redsea.MazeEscape
         {
             startIndex = -1;
             endIndex = -1;
-            _onOffData = new bool[60];
+            onOffData = new bool[60];
         }
 
         private void Update()
@@ -63,7 +69,7 @@ namespace Com.Redsea.MazeEscape
         {
             for (int i = 0; i < bars.Length; i++)
             {
-                _onOffData[i] = bars[i].GetComponent<Bar>().check;
+                onOffData[i] = bars[i].GetComponent<Bar>().check;
             }
         }
 

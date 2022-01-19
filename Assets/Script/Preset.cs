@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,7 @@ namespace Com.Redsea.MazeEscape
         public ReadyManager readyManager;
         public GameObject frameImage;
         public Text indexText;
+        public Text subject;
 
         #endregion
 
@@ -65,6 +67,18 @@ namespace Com.Redsea.MazeEscape
             // 프레임 나타내기
             frameImage.gameObject.SetActive(true);
             _isSelected = true;
+            
+            // Maze 업데이트
+            readyManager.MazeUpdate();
+        }
+
+        #endregion
+
+        #region Custom Methods
+
+        public void OnClickDeleteButton()
+        {
+            readyManager.DeletePreset(index);
         }
 
         #endregion

@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 8524007213250841352}
   - component: {fileID: 4012358562751305138}
   m_Layer: 5
-  m_Name: Name
+  m_Name: Subject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
   readyManager: {fileID: 0}
   frameImage: {fileID: 112194127967115548}
   indexText: {fileID: 6949198910029667805}
+  subject: {fileID: 4012358562751305138}
 --- !u!61 &7418249761790875483
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -233,7 +234,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -39.018364, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -244,7 +245,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 450, y: 90}
+  m_Size: {x: 371.96326, y: 90}
   m_EdgeRadius: 0
 --- !u!1 &4988468969602232556
 GameObject:
@@ -365,7 +366,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4988468969602232553}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3860600165784105415}
+        m_TargetAssemblyTypeName: Com.Redsea.MazeEscape.Preset, Assembly-CSharp
+        m_MethodName: OnClickDeleteButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9158294065890188624
 GameObject:
   m_ObjectHideFlags: 0

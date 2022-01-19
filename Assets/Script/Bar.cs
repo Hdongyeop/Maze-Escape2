@@ -10,11 +10,11 @@ namespace Com.Redsea.MazeEscape
     {
         #region Private Fields
         
-        private Color _changeColor = Color.red;
+        private Color _changeColor = Color.black;
         private Collider _collider;
         private SpriteRenderer _spriteRenderer;
         private Color _oldColor;
-        private int[] _wall = new[] {1, 2, 3, 4, 5, 6, 11, 17, 22, 28, 33, 39, 44, 50, 55, 56, 57, 58, 59, 60};
+        private int[] _wall = new[] {0, 1, 2, 3, 4, 5, 10, 16, 21, 27, 32, 38, 43, 49, 54, 55, 56, 57, 58, 59};
 
         #endregion
         
@@ -79,8 +79,18 @@ namespace Com.Redsea.MazeEscape
         #endregion
 
         #region Custom Methods
-        
-        
+
+        public void BarColorUpdate()
+        {
+            if (check)
+            {
+                _spriteRenderer.color = _changeColor;
+            }
+            else
+            {
+                _spriteRenderer.color = _oldColor;
+            }
+        }
 
         #endregion
 
