@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,21 @@ namespace Com.Redsea.MazeEscape
 {
     public class StartButton : MonoBehaviour
     {
+        #region Public Fields
+
         [Tooltip("안내 텍스트")]
         public Text infoText;
         [Tooltip("닉네임 텍스트")]
         public Text nickName;
+
+        #endregion
+
+        #region MonoBehaviour CallBacks
+
+        #endregion
+        
+        #region Custom Methods
+
         public void OnClicked()
         {
             if (string.IsNullOrEmpty(nickName.text))
@@ -23,6 +35,9 @@ namespace Com.Redsea.MazeEscape
                 SceneManager.LoadScene(1);
             }
         }
+
+        #endregion
+        
     }
 
 }

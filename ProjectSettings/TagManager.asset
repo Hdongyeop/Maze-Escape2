@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ROOM
   - PRESET
+  - NetworkManager
   layers:
   - Default
   - TransparentFX

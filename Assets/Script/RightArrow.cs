@@ -24,6 +24,7 @@ namespace Com.Redsea.MazeEscape
         /// </summary>
         public void OnClickRightArrow()
         {
+            Debug.Log($"선택한 프리셋 인덱스 : {PlayerPrefs.GetInt("PRESET_NUMBER")}");
             SceneManager.LoadScene(2);
         }
 

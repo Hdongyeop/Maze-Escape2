@@ -76,8 +76,8 @@ namespace Com.Redsea.MazeEscape
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                Debug.Log("룸에 입장했습니다.");
-                PhotonNetwork.LoadLevel(2);
+                Debug.Log("마스터 클라이언트 : 룸에 입장했습니다.");
+                PhotonNetwork.LoadLevel(3);
             }
             else
             {
@@ -94,8 +94,8 @@ namespace Com.Redsea.MazeEscape
                     Hashtable cp = room.CustomProperties;
                     if (askPasswordUI.GetComponentInChildren<InputField>().text == (string)cp["P"])
                     {
-                        Debug.Log("룸에 입장했습니다.");
-                        PhotonNetwork.LoadLevel(2);
+                        Debug.Log("일반 클라이언트 : 룸에 입장했습니다.");
+                        PhotonNetwork.LoadLevel(3);
                     }
                     else
                     {

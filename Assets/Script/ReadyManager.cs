@@ -8,6 +8,7 @@ namespace Com.Redsea.MazeEscape
     {
         #region Private Fields
 
+        private string jsonPath;
         private bool _checkFixed;
         private MazeData[] _presetData;
         private bool[] _visited;
@@ -17,16 +18,23 @@ namespace Com.Redsea.MazeEscape
         
         #region Public Fields
 
+        [Tooltip("미궁 제작용")]
         public Maze maze;
-        public GameObject presetPanel;
-        public GameObject presetPrefab;
+        [Tooltip("제목 입력란")]
         public InputField inputField;
+        [Tooltip("좌측 상단 설명란")]
         public Text infoText;
+        [Tooltip("제목입력란, 세이브버튼을 묶은것")]
         public GameObject belowUI;
+        [Tooltip("출발 지점")]
         public Sign start;
+        [Tooltip("도착 지점")]
         public Sign end;
+        [Tooltip("현재 프리셋 인덱스")]
         public int curPresetIndex;
+        [Tooltip("프리셋 배열")]
         public Preset[] presets;
+        [Tooltip("다음 씬으로 넘어가는 버튼")]
         public GameObject rightArrow;
 
         #endregion
@@ -39,6 +47,12 @@ namespace Com.Redsea.MazeEscape
             curPresetIndex = -1;
             _presetData = new MazeData[5];
             
+            // Json폴더가 없는 경우 생성
+            jsonPath = Application.dataPath + "/Json";
+            DirectoryInfo di = new DirectoryInfo(jsonPath);
+            if(di.Exists == false)
+                di.Create();
+            
             // Json파일에서 preset 불러오기
             LoadFromJson();
         }
@@ -46,10 +60,10 @@ namespace Com.Redsea.MazeEscape
         private void Update()
         {
             CheckIsFixed();
-            if(curPresetIndex != -1 && maze.startIndex != -1 && maze.endIndex != -1)
-                rightArrow.gameObject.SetActive(true);
-            else
+            if(curPresetIndex == -1 || maze.startIndex == -1 || maze.endIndex == -1 || _presetData[curPresetIndex].presetName == "비 어 있 음")
                 rightArrow.gameObject.SetActive(false);
+            else
+                rightArrow.gameObject.SetActive(true);
         }
 
         #endregion
@@ -124,7 +138,7 @@ namespace Com.Redsea.MazeEscape
             string mazeJson = JsonUtility.ToJson(mazeData);
             Debug.Log($"mazeJson : {mazeJson}");
             
-            File.WriteAllText(Application.dataPath + $"/Json/Preset_{curPresetIndex}.json", mazeJson);
+            File.WriteAllText(jsonPath + $"/Preset_{curPresetIndex}.json", mazeJson);
         }
 
         /// <summary>
@@ -134,7 +148,7 @@ namespace Com.Redsea.MazeEscape
         {
             for (int i = 0; i < 5; i++)
             {
-                var load = File.ReadAllText(Application.dataPath + $"/Json/Preset_{i}.json");
+                var load = File.ReadAllText(jsonPath + $"/Preset_{i}.json");
                 var presetData = JsonUtility.FromJson<MazeData>(load);
                 _presetData[i] = presetData;
                 presets[i].subject.text = presetData.presetName;
@@ -148,7 +162,7 @@ namespace Com.Redsea.MazeEscape
         public void DeletePreset(int index)
         {
             Debug.Log($"{index}번 프리셋을 삭제했습니다.");
-            var load = File.ReadAllText(Application.dataPath + $"/Json/Preset_{index}.json");
+            var load = File.ReadAllText(jsonPath + $"/Preset_{index}.json");
             var presetData = JsonUtility.FromJson<MazeData>(load);
 
             presetData.presetName = "비 어 있 음";
@@ -156,7 +170,7 @@ namespace Com.Redsea.MazeEscape
             presetData.endIndex = -1;
             presetData.onOffData = maze.defaultSetting;
             
-            File.WriteAllText(Application.dataPath + $"/Json/Preset_{index}.json", JsonUtility.ToJson(presetData));
+            File.WriteAllText(jsonPath + $"/Preset_{index}.json", JsonUtility.ToJson(presetData));
             
             LoadFromJson();
         }
