@@ -7,6 +7,8 @@ TagManager:
   - ROOM
   - PRESET
   - NetworkManager
+  - ReadyButton
+  - Maze
   layers:
   - Default
   - TransparentFX

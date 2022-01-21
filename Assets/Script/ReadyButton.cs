@@ -35,6 +35,9 @@ namespace Com.Redsea.MazeEscape
 
         #region Custom Methods
 
+        /// <summary>
+        /// 버튼을 눌렀을 때 실행되는 함수
+        /// </summary>
         public void OnToggleReadyButton()
         {
             if (photonView.IsMine)
@@ -48,7 +51,7 @@ namespace Com.Redsea.MazeEscape
                 {
                     ready = false;
                     readyText.text = "준비";
-                }    
+                }
             }
         }
 

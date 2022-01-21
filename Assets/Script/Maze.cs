@@ -97,7 +97,7 @@ namespace Com.Redsea.MazeEscape
                 transform.parent = _netWorkManager.mazePos2;
             }
             
-            gameObject.transform.localPosition = new Vector3(0f, 36f, 0f);
+            gameObject.transform.localPosition = Vector3.zero;
         }
 
         #endregion

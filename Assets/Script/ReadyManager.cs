@@ -195,6 +195,9 @@ namespace Com.Redsea.MazeEscape
             // 이미 저장된 프리셋은 도착에 도달할 수 있으므로
             _reachAble = true;
             
+            // 현재 프리셋 번호 저장
+            PlayerPrefs.SetInt("PRESET_NUMBER", curPresetIndex);
+            
             // 예외처리 : 빈 프리셋일 경우
             if (mazeData.startIndex == -1 || mazeData.endIndex == -1)
             {
@@ -244,9 +247,6 @@ namespace Com.Redsea.MazeEscape
 
             // InputText 업데이트
             inputField.text = mazeData.presetName;
-            
-            // 현재 프리셋 번호 저장
-            PlayerPrefs.SetInt("PRESET_NUMBER", curPresetIndex);
         }
 
         private void FindPath(int curIndex)
