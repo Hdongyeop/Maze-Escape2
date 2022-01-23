@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 namespace Com.Redsea.MazeEscape
@@ -112,6 +113,16 @@ namespace Com.Redsea.MazeEscape
             Debug.Log("로비에 접속하였습니다.");
             // 방 리스트 2초마다 갱신
             //InvokeRepeating("OnRoomListUpdate", 0f, 2f);
+        }
+
+        public override void OnLeftLobby()
+        {
+            Debug.Log("로비를 떠났습니다.");
+        }
+
+        public override void OnDisconnected(DisconnectCause cause)
+        {
+            Debug.Log("서버와 연결이 끊겼습니다.");
         }
 
         public override void OnJoinRoomFailed(short returnCode, string message)
@@ -262,6 +273,12 @@ namespace Com.Redsea.MazeEscape
             {
                 PhotonNetwork.JoinRoom(roomName, null);
             }
+        }
+
+        public void OnClickBackButton()
+        {
+            PhotonNetwork.Disconnect();
+            SceneManager.LoadScene(1);
         }
         
         #endregion

@@ -12,14 +12,13 @@ namespace Com.Redsea.MazeEscape
     public class NetworkManager : MonoBehaviourPunCallbacks
     {
         #region Private Fields
-
-        // 두 명이 모두 레디를 했을 때 flag
-        private bool _ready;
+        
+        
         
         #endregion
         
         #region Public Fields
-
+        
         [Tooltip("True이면 내 턴")]
         public bool turn;
         [Tooltip("하단 인포 텍스트 배경")]
@@ -46,9 +45,9 @@ namespace Com.Redsea.MazeEscape
         public GameObject area2;
         [Tooltip("플레이어(초록색)")]
         public GameObject playerPrefab;
-        [Tooltip("적(빨간색)")]
-        public GameObject enemy;
-
+        // 두 명이 모두 레디를 했을 때 flag
+        public bool _ready;
+        
         #endregion
 
         #region MonoBehaviour CallBacks
@@ -83,6 +82,9 @@ namespace Com.Redsea.MazeEscape
             
             // ready false
             _ready = false;
+            
+            // 플레이어 소환
+            PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -104,10 +106,13 @@ namespace Com.Redsea.MazeEscape
             Debug.Log("나가기(패배)");
             //패배 처리
             
-            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
             SceneManager.LoadScene(2);
         }
 
+        /// <summary>
+        /// 프리팹 생성 (닉네임, 미궁, 레디버튼 )
+        /// </summary>
         private void InstantiatePrefabs()
         {
             // 닉네임
@@ -116,6 +121,8 @@ namespace Com.Redsea.MazeEscape
             PhotonNetwork.Instantiate(mazePrefab.name, Vector3.zero, Quaternion.identity);
             // 레디 버튼
             PhotonNetwork.Instantiate(readyButtonPrefab.name, Vector3.zero, Quaternion.identity);
+            // 플레이어 소환
+            PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
         }
 
         private void InputProcess()
@@ -139,17 +146,16 @@ namespace Com.Redsea.MazeEscape
             }
             
             var readyButtons = GameObject.FindGameObjectsWithTag("ReadyButton");
+            if (readyButtons.Length != 2)
+                return;
             foreach (var readyButton in readyButtons)
             {
-                if (!readyButton.GetComponent<ReadyButton>().ready || readyButtons.Length != 2)
+                if (!readyButton.GetComponent<ReadyButton>().ready)
                     return;
             }
 
             // 두 플레이어 모두 레디를 했을 때
             _ready = true;
-
-            // 플레이어 소환
-            PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
 
             // 텍스트 구역을 불러옴
             textArea.SetActive(true);
@@ -174,6 +180,7 @@ namespace Com.Redsea.MazeEscape
                 // 도전자 선공
                 turn = false;
                 infoText.text = "상대의 턴 입니다.";
+                photonView.RPC("YieldTurn", RpcTarget.Others);
                 photonView.RPC("SetInfoText", RpcTarget.Others, "당신의 턴 입니다.");
             }
         }
@@ -181,7 +188,7 @@ namespace Com.Redsea.MazeEscape
         /// <summary>
         /// 자신의 턴을 종료하고 상대로 넘긴다.
         /// </summary>
-        private void EndTurn()
+        public void EndTurn()
         {
             turn = false;
             infoText.text = "상대의 턴 입니다.";
@@ -192,16 +199,6 @@ namespace Com.Redsea.MazeEscape
         #endregion
 
         #region PUN RPCs
-        
-        /// <summary>
-        /// 선택한 위치로 갈 수 있는지, 갈 수 있다면 이동
-        /// </summary>
-        [PunRPC]
-        public void AbleDirection(int fromIndex, int toIndex)
-        {
-            // from -> to
-            
-        }
 
         /// <summary>
         /// 턴 넘기기에 필요한 RPC
