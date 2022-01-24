@@ -195,6 +195,11 @@ namespace Com.Redsea.MazeEscape
             photonView.RPC("YieldTurn", RpcTarget.Others);
             photonView.RPC("SetInfoText", RpcTarget.Others, "당신의 턴 입니다.");
         }
+
+        public void LappedSetInfoText(string str)
+        {
+            photonView.RPC("SetInfoText", RpcTarget.Others, str);
+        }
         
         #endregion
 

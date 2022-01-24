@@ -20,6 +20,11 @@ namespace Com.Redsea.MazeEscape
 
         #region MonoBehaviour CallBacks
 
+        private void Awake()
+        {
+            
+        }
+
         #endregion
         
         #region Custom Methods

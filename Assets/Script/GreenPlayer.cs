@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.IO;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Com.Redsea.MazeEscape
 {
@@ -10,6 +12,7 @@ namespace Com.Redsea.MazeEscape
     {
         #region Private Fields
 
+        private bool _finished = false;
         private bool _onceFlag = true;
         private NetworkManager _networkManager;
         private MazeData _mazeData;
@@ -93,9 +96,11 @@ namespace Com.Redsea.MazeEscape
                         }
                     }
                 }
-                
-                if(_networkManager.turn)
+
+                if (_networkManager.turn)
+                {
                     InputProcess();
+                }
 
                 if (_otherPlayer != null)
                 {
@@ -104,6 +109,9 @@ namespace Com.Redsea.MazeEscape
                     tmp.x += 317f;
                     gameObject.transform.localPosition = tmp;
                 }
+                
+                if(!_finished)
+                    CheckFinish();
             }
         }
 
@@ -111,6 +119,32 @@ namespace Com.Redsea.MazeEscape
 
         #region Custom Methods
 
+        private void CheckFinish()
+        {
+            if (curPlayerIndex == _otherPlayer._mazeData.endIndex)
+            {
+                _finished = true;
+             
+                var WIN = PlayerPrefs.GetInt("WIN");
+                var LOSE = PlayerPrefs.GetInt("LOSE");
+                
+                // 승리, 패배 추가
+                _networkManager.infoText.text = "도착지점에 먼저 도달했습니다. 승리!!";
+                PlayerPrefs.SetInt("WIN", WIN + 1);
+                _networkManager.LappedSetInfoText("상대가 먼저 도착지점에 도달했습니다. 패배");
+                photonView.RPC("AddLose", RpcTarget.Others);
+                
+                // 로비로
+                StartCoroutine(WaitSeconds(2f));
+            }
+        }
+
+        private IEnumerator WaitSeconds(float time)
+        {
+            yield return new WaitForSeconds(time);
+            photonView.RPC("GoToLobby", RpcTarget.Others);
+        }
+        
         private void InputProcess()
         {
             var y = curPlayerIndex / 5;
@@ -256,6 +290,31 @@ namespace Com.Redsea.MazeEscape
             }
         }
 
+        #endregion
+
+        #region PUN RPCs
+
+        [PunRPC]
+        private void AddWin()
+        {
+            var WIN = PlayerPrefs.GetInt("WIN");
+            PlayerPrefs.SetInt("WIN", WIN + 1);
+        }
+
+        [PunRPC]
+        private void AddLose()
+        {
+            var LOSE = PlayerPrefs.GetInt("LOSE");
+            PlayerPrefs.SetInt("LOSE", LOSE + 1);
+        }
+
+        [PunRPC]
+        private void GoToLobby()
+        {
+            PhotonNetwork.Disconnect();
+            SceneManager.LoadScene(2);
+        }
+        
         #endregion
     }
 }

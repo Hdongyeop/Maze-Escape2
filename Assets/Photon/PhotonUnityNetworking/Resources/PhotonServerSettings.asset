@@ -46,6 +46,9 @@ MonoBehaviour:
   - YieldTurn
   - ExchangeMazeData
   - SetPlayerStartIndex
+  - AddLose
+  - AddWin
+  - GoToLobby
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

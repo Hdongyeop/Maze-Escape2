@@ -212,7 +212,7 @@ namespace Com.Redsea.MazeEscape
             }
             else
             {
-                winRate.text = (win / (win + lose)) * 100 + " %";
+                winRate.text = ((float)win / (win + lose)) * 100 + " %";
             }
         }
 
